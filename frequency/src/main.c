@@ -5,10 +5,9 @@
 
 int main(int argc, char *argv[]) {
 
-    int result_cnt;
-    int* result = frequency(argv[1], &result_cnt);
+    int* result = frequency(argv[1]);
 
-    for (int i = 0; i < result_cnt; i++)
+    for (int i = 0; i < 26; i++)
         printf("%d\n", *(result + i));
     printf("\n");
 

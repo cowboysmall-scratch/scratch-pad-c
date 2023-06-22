@@ -24,9 +24,44 @@ int update(char* s, int* res, int idx, int val) {
 }
 
 
-int* frequency(char* s, int* res_cnt) {
 
-    *res_cnt = 26;
+int offset(char* s, int start, int end) {
+
+    int off = 0;
+
+    for (int i = start; i < end; i++) {
+
+        if (*(s + i) != ')') {
+
+            off += 1;
+
+        } else {
+
+            return off;
+        }
+    }
+}
+
+
+
+int number(char* s, int start, int off) {
+
+    int cnt = 0;
+    int pwr = 1;
+
+    for (int i = off - 1; i >= 1; i--) {
+
+        cnt += (*(s + start + i) - 48) * pwr;
+        pwr *= 10;
+    }
+
+    return cnt;
+}
+
+
+
+int* frequency(char* s) {
+
     int *res = malloc(26 * sizeof(int));
 
     int len = strlen(s);
@@ -43,41 +78,19 @@ int* frequency(char* s, int* res_cnt) {
             par = 3;
 
 
-        if (par == 0) {
+        if (par != 0) {
 
-            idx += update(s, res, idx, 1);
+            int off = offset(s, idx + par, len);
+            int nmb = number(s, idx + par, off);
+
+            idx += update(s, res, idx, nmb);
+            idx += off;
 
         } else {
 
-            int cnt = 0;
-            int off = 0;
-
-            for (int j = idx + par; j < len; j++) {
-
-                if (*(s + j) != ')') {
-
-                    off++;
-
-                } else {
-
-                    int pwr = 1;
-
-                    for (int k = 1; k < off; k++) {
-
-                        cnt += (*(s + j - k) - 48) * pwr;
-                        pwr *= 10;
-                    }
-
-                    break;
-                }
-            }
-
-            idx += update(s, res, idx, cnt);
-            idx += off;
+            idx += update(s, res, idx, 1);
         }
-
     }
 
     return res;
 }
-

@@ -1,2 +1,2 @@
 
-int* frequency(char* s, int* result_cnt);
+int* frequency(char* s);

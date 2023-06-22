@@ -5,53 +5,47 @@
 
 
 
-int update(char* s, int* res, int idx, int val) {
+int update(char* str, int* res, int idx, int val) {
 
-    if (*(s + idx + 2) == '#') {
+    if (*(str + idx + 2) == '#') {
 
-        int value = ((*(s + idx) - 48) * 10) + (*(s + idx + 1) - 48);
-        res[value - 1] += val;
-
+        int dec = ((*(str + idx) - 48) * 10) + (*(str + idx + 1) - 48);
+        *(res + dec - 1) += val;
         return 3;
 
     } else {
 
-        int value = (*(s + idx) - 48);
-        res[value - 1] += val;
-
+        int dec = (*(str + idx) - 48);
+        *(res + dec - 1) += val;
         return 1;
     }
 }
 
 
 
-int offset(char* s, int start, int end) {
+int offset(char* str, int start, int end) {
 
     int off = 0;
 
-    for (int i = start; i < end; i++) {
-
-        if (*(s + i) != ')') {
-
+    for (int i = start; i < end; i++)
+        if (*(str + i) != ')')
             off += 1;
+        else
+            break;
 
-        } else {
-
-            return off;
-        }
-    }
+    return off;
 }
 
 
 
-int number(char* s, int start, int off) {
+int number(char* str, int start, int off) {
 
     int cnt = 0;
     int pwr = 1;
 
     for (int i = off - 1; i >= 1; i--) {
 
-        cnt += (*(s + start + i) - 48) * pwr;
+        cnt += (*(str + start + i) - 48) * pwr;
         pwr *= 10;
     }
 
@@ -60,35 +54,35 @@ int number(char* s, int start, int off) {
 
 
 
-int* frequency(char* s) {
+int* frequency(char* str) {
 
     int *res = malloc(26 * sizeof(int));
 
-    int len = strlen(s);
+    int len = strlen(str);
     int idx = 0;
 
     while (idx < len) {
 
         int par = 0;
 
-        if (*(s + idx + 1) == '(')
+        if (*(str + idx + 1) == '(')
             par = 1;
 
-        if (*(s + idx + 2) == '#' && *(s + idx + 3) == '(')
+        if (*(str + idx + 2) == '#' && *(str + idx + 3) == '(')
             par = 3;
 
 
         if (par != 0) {
 
-            int off = offset(s, idx + par, len);
-            int nmb = number(s, idx + par, off);
+            int off = offset(str, idx + par, len);
+            int nmb = number(str, idx + par, off);
 
-            idx += update(s, res, idx, nmb);
+            idx += update(str, res, idx, nmb);
             idx += off;
 
         } else {
 
-            idx += update(s, res, idx, 1);
+            idx += update(str, res, idx, 1);
         }
     }
 

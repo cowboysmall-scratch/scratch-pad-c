@@ -24,15 +24,13 @@ int update(char* str, int* res, int idx, int val) {
 
 
 
-int offset(char* str, int start, int end) {
+int offset(char* str, int start) {
 
     int off = 0;
+    int ptr = start;
 
-    for (int i = start; i < end; i++)
-        if (*(str + i) != ')')
-            off += 1;
-        else
-            break;
+    while (*(str + ptr++) != ')')
+        off++;
 
     return off;
 }
@@ -66,15 +64,15 @@ int* frequency(char* str) {
 
         int par = 0;
 
-        if (len - idx > 1 && *(str + idx + 1) == '(')
+        if (len - idx > 2 && *(str + idx + 1) == '(')
             par = 1;
 
-        if (len - idx > 3 && *(str + idx + 2) == '#' && *(str + idx + 3) == '(')
+        if (len - idx > 4 && *(str + idx + 2) == '#' && *(str + idx + 3) == '(')
             par = 3;
 
         if (par != 0) {
 
-            int off = offset(str, idx + par, len);
+            int off = offset(str, idx + par);
             int nmb = number(str, idx + par, off);
 
             idx += update(str, res, idx, nmb);

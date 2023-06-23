@@ -6,21 +6,49 @@
 
 
 
-int update(char* str, int* res, int idx, int val) {
+int offset(char* str, int start);
 
-    if (*(str + idx + 2) == '#') {
+int number(char* str, int start, int off);
 
-        int dec = ((*(str + idx) - 48) * 10) + (*(str + idx + 1) - 48);
-        *(res + dec - 1) += val;
-        return 3;
+int update(char* str, int idx, int val, int* res);
 
-    } else {
 
-        int dec = (*(str + idx) - 48);
-        *(res + dec - 1) += val;
-        return 1;
+
+int* frequency(char* str) {
+
+    int *res = malloc(26 * sizeof(int));
+
+    int len = strlen(str);
+    int idx = 0;
+
+    while (idx < len) {
+
+        int par = 0;
+
+        if (len - idx > 2 && *(str + idx + 1) == '(')
+            par = 1;
+
+        if (len - idx > 4 && *(str + idx + 2) == '#' && *(str + idx + 3) == '(')
+            par = 3;
+
+        if (par != 0) {
+
+            int off = offset(str, idx + par);
+            int nmb = number(str, idx + par, off);
+
+            idx += update(str, idx, nmb, res);
+            idx += off;
+
+        } else {
+
+            idx += update(str, idx, 1, res);
+        }
     }
+
+    return res;
 }
+
+
 
 
 
@@ -53,36 +81,18 @@ int number(char* str, int start, int off) {
 
 
 
-int* frequency(char* str) {
+int update(char* str, int idx, int val, int* res) {
 
-    int *res = malloc(26 * sizeof(int));
+    if (*(str + idx + 2) == '#') {
 
-    int len = strlen(str);
-    int idx = 0;
+        int dec = ((*(str + idx) - 48) * 10) + (*(str + idx + 1) - 48);
+        *(res + dec - 1) += val;
+        return 3;
 
-    while (idx < len) {
+    } else {
 
-        int par = 0;
-
-        if (len - idx > 2 && *(str + idx + 1) == '(')
-            par = 1;
-
-        if (len - idx > 4 && *(str + idx + 2) == '#' && *(str + idx + 3) == '(')
-            par = 3;
-
-        if (par != 0) {
-
-            int off = offset(str, idx + par);
-            int nmb = number(str, idx + par, off);
-
-            idx += update(str, res, idx, nmb);
-            idx += off;
-
-        } else {
-
-            idx += update(str, res, idx, 1);
-        }
+        int dec = (*(str + idx) - 48);
+        *(res + dec - 1) += val;
+        return 1;
     }
-
-    return res;
 }

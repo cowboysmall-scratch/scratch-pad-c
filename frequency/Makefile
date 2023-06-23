@@ -12,11 +12,11 @@ OBJS      := $(SRCS:$(SRC_DIR)/%.c=$(BUILD_DIR)/%.o)
 
 
 
-all: $(BUILD_DIR)/main
+all: $(BUILD_DIR)/frequency
 
 
 
-$(BUILD_DIR)/main: $(OBJS)
+$(BUILD_DIR)/frequency: $(OBJS)
 	gcc $(OBJS) -o $@
 
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c

@@ -1,98 +1,48 @@
-#include <stdlib.h>
-#include <string.h>
 #include <stdio.h>
 
-#include "frequency.h"
+#include "table.h"
 
 
 
-int offset(char* str, int start);
-
-int number(char* str, int start, int off);
-
-int update(char* str, int idx, int val, int* res);
+int help_message();
 
 
 
-int* frequency(char* str) {
+int main(int argc, char *argv[]) {
 
-    int *res = malloc(26 * sizeof(int));
+    if (argc == 1)
+        return help_message();
 
-    int len = strlen(str);
-    int idx = 0;
+    printf("\n");
+    printf("\tEncoded String: %s\n", argv[1]);
+    printf("\n");
 
-    while (idx < len) {
+    int* res = table(argv[1]);
 
-        int par = 0;
+    for (int i = 0; i < 26; i++)
+        printf("\t%5d -> %5d\n", i + 1, *(res + i));
+    printf("\n");
 
-        if (len - idx > 2 && *(str + idx + 1) == '(')
-            par = 1;
-
-        if (len - idx > 4 && *(str + idx + 2) == '#' && *(str + idx + 3) == '(')
-            par = 3;
-
-        if (par != 0) {
-
-            int off = offset(str, idx + par);
-            int nmb = number(str, idx + par, off);
-
-            idx += update(str, idx, nmb, res);
-            idx += off;
-
-        } else {
-
-            idx += update(str, idx, 1, res);
-        }
-    }
-
-    return res;
+    return 0;
 }
 
 
 
+int help_message() {
 
-
-int offset(char* str, int start) {
-
-    int off = 0;
-    int ptr = start;
-
-    while (*(str + ptr++) != ')')
-        off++;
-
-    return off;
-}
-
-
-
-int number(char* str, int start, int off) {
-
-    int cnt = 0;
-    int pwr = 1;
-
-    for (int i = off - 1; i >= 1; i--) {
-
-        cnt += (*(str + start + i) - 48) * pwr;
-        pwr *= 10;
-    }
-
-    return cnt;
-}
-
-
-
-int update(char* str, int idx, int val, int* res) {
-
-    if (*(str + idx + 2) == '#') {
-
-        int dec = ((*(str + idx) - 48) * 10) + (*(str + idx + 1) - 48);
-        *(res + dec - 1) += val;
-        return 3;
-
-    } else {
-
-        int dec = (*(str + idx) - 48);
-        *(res + dec - 1) += val;
-        return 1;
-    }
+    printf("Usage: frequency <encoded>");
+    printf("\n");
+    printf("\n");
+    printf(" where <encoded> is a string of letters\n encoded as numbers of the form:");
+    printf("\n");
+    printf("\n");
+    printf("  a - i  ->   1 - 9");
+    printf("\n");
+    printf("  j - z  -> 10# - 26#");
+    printf("\n");
+    printf("\n");
+    printf(" and n(c) where n is an encoded letter\n as per the above scheme, and c is the\n multiplicity");
+    printf("\n");
+    printf("\n");
+    return -1;
 }

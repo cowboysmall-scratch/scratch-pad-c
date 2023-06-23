@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 
 #include "frequency.h"
 
@@ -65,12 +66,11 @@ int* frequency(char* str) {
 
         int par = 0;
 
-        if (*(str + idx + 1) == '(')
+        if (len - idx > 2 && *(str + idx + 1) == '(')
             par = 1;
 
-        if (*(str + idx + 2) == '#' && *(str + idx + 3) == '(')
+        if (len - idx > 3 && *(str + idx + 2) == '#' && *(str + idx + 3) == '(')
             par = 3;
-
 
         if (par != 0) {
 

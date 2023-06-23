@@ -1,2 +1,4 @@
 
-int* table(char* s);
+int check(char* str);
+
+int* table(char* str);

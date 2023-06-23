@@ -14,6 +14,30 @@ int update(char* str, int idx, int val, int* res);
 
 
 
+int check(char* str) {
+
+    int len = strlen(str);
+    int idx = 0;
+    int ctr = 0;
+
+    while (idx < len) {
+
+        if (*(str + idx) == '(')
+            ctr++;
+
+        if (*(str + idx) == ')')
+            ctr--;
+
+        if (ctr > 1 || ctr < 0)
+            break;
+
+        idx++;
+    }
+    return ctr;
+}
+
+
+
 int* table(char* str) {
 
     int *res = malloc(26 * sizeof(int));

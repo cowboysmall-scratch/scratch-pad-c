@@ -4,13 +4,18 @@
 
 #include "table.h"
 
+#define FIND(str, idx, chr) (*(str + idx) == chr)
 
+
+int locate(char* str, int idx, int len);
+
+int decode(char* str, int idx);
 
 int offset(char* str, int start);
 
-int number(char* str, int start, int off);
+int multip(char* str, int start, int off);
 
-int update(char* str, int idx, int val, int* res);
+int update(int* res, int dec, int mlt);
 
 
 
@@ -22,10 +27,10 @@ int check(char* str) {
 
     while (idx < len) {
 
-        if (*(str + idx) == '(')
+        if (FIND(str,  idx, '('))
             ctr++;
 
-        if (*(str + idx) == ')')
+        if (FIND(str,  idx, ')'))
             ctr--;
 
         if (ctr > 1 || ctr < 0)
@@ -33,6 +38,7 @@ int check(char* str) {
 
         idx++;
     }
+
     return ctr;
 }
 
@@ -47,25 +53,22 @@ int* table(char* str) {
 
     while (idx < len) {
 
-        int par = 0;
+        int par = locate(str, idx, len);
 
-        if (len - idx > 2 && *(str + idx + 1) == '(')
-            par = 1;
+        if (par == 0) {
 
-        if (len - idx > 4 && *(str + idx + 2) == '#' && *(str + idx + 3) == '(')
-            par = 3;
+            int dec = decode(str, idx);
 
-        if (par != 0) {
-
-            int off = offset(str, idx + par);
-            int nmb = number(str, idx + par, off);
-
-            idx += update(str, idx, nmb, res);
-            idx += off + 1;
+            idx += update(res, dec, 1);
 
         } else {
 
-            idx += update(str, idx, 1, res);
+            int dec = decode(str, idx);
+            int off = offset(str, idx + par);
+            int mlt = multip(str, idx + par, off);
+
+            idx += update(res, dec, mlt);
+            idx += off + 1;
         }
     }
 
@@ -74,6 +77,24 @@ int* table(char* str) {
 
 
 
+int locate(char* str, int idx, int len) {
+
+    if (idx + 2 < len && FIND(str, idx + 1, '('))
+        return 1;
+    else if (idx + 4 < len && FIND(str, idx + 2, '#') && FIND(str, idx + 3, '('))
+        return 3;
+    else
+        return 0;
+}
+
+
+int decode(char* str, int idx) {
+
+    if (FIND(str, idx + 2, '#'))
+        return ((*(str + idx) - 48) * 10) + (*(str + idx + 1) - 48);
+    else
+        return (*(str + idx) - 48);
+}
 
 
 int offset(char* str, int start) {
@@ -88,37 +109,25 @@ int offset(char* str, int start) {
 }
 
 
+int multip(char* str, int start, int off) {
 
-int number(char* str, int start, int off) {
-
-    int cnt = 0;
+    int mlt = 0;
     int pwr = 1;
 
     for (int i = off - 1; i >= 1; i--) {
 
-        cnt += (*(str + start + i) - 48) * pwr;
+        mlt += (*(str + start + i) - 48) * pwr;
         pwr *= 10;
     }
 
-    return cnt;
+    return mlt;
 }
 
 
+int update(int* res, int dec, int mlt) {
 
-int update(char* str, int idx, int val, int* res) {
+    if (1 <= dec && dec <= 26)
+        *(res + dec - 1) += mlt;
 
-    if (*(str + idx + 2) == '#') {
-
-        int dec = ((*(str + idx) - 48) * 10) + (*(str + idx + 1) - 48);
-        if (1 <= dec && dec <= 26)
-            *(res + dec - 1) += val;
-        return 3;
-
-    } else {
-
-        int dec = (*(str + idx) - 48);
-        if (1 <= dec && dec <= 26)
-            *(res + dec - 1) += val;
-        return 1;
-    }
+    return (dec < 10) ? 1 : 3;
 }

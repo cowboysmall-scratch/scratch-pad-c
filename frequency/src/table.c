@@ -7,15 +7,61 @@
 #define FIND(str, idx, chr) (*(str + idx) == chr)
 
 
-int locate(char* str, int idx, int len);
 
-int decode(char* str, int idx);
+static int locate(char* str, int idx, int len) {
 
-int offset(char* str, int start);
+    if (idx + 2 < len && FIND(str, idx + 1, '('))
+        return 1;
+    else if (idx + 4 < len && FIND(str, idx + 2, '#') && FIND(str, idx + 3, '('))
+        return 3;
+    else
+        return 0;
+}
 
-int multip(char* str, int start, int off);
 
-int update(int* res, int dec, int mlt);
+static int decode(char* str, int idx) {
+
+    if (FIND(str, idx + 2, '#'))
+        return ((*(str + idx) - 48) * 10) + (*(str + idx + 1) - 48);
+    else
+        return (*(str + idx) - 48);
+}
+
+
+static int offset(char* str, int start) {
+
+    int off = 0;
+    int ptr = start;
+
+    while (*(str + ptr++) != ')')
+        off++;
+
+    return off;
+}
+
+
+static int multip(char* str, int start, int off) {
+
+    int mlt = 0;
+    int pwr = 1;
+
+    for (int i = off - 1; i >= 1; i--) {
+
+        mlt += (*(str + start + i) - 48) * pwr;
+        pwr *= 10;
+    }
+
+    return mlt;
+}
+
+
+static int update(int* res, int dec, int mlt) {
+
+    if (1 <= dec && dec <= 26)
+        *(res + dec - 1) += mlt;
+
+    return (dec < 10) ? 1 : 3;
+}
 
 
 
@@ -73,61 +119,4 @@ int* table(char* str) {
     }
 
     return res;
-}
-
-
-
-int locate(char* str, int idx, int len) {
-
-    if (idx + 2 < len && FIND(str, idx + 1, '('))
-        return 1;
-    else if (idx + 4 < len && FIND(str, idx + 2, '#') && FIND(str, idx + 3, '('))
-        return 3;
-    else
-        return 0;
-}
-
-
-int decode(char* str, int idx) {
-
-    if (FIND(str, idx + 2, '#'))
-        return ((*(str + idx) - 48) * 10) + (*(str + idx + 1) - 48);
-    else
-        return (*(str + idx) - 48);
-}
-
-
-int offset(char* str, int start) {
-
-    int off = 0;
-    int ptr = start;
-
-    while (*(str + ptr++) != ')')
-        off++;
-
-    return off;
-}
-
-
-int multip(char* str, int start, int off) {
-
-    int mlt = 0;
-    int pwr = 1;
-
-    for (int i = off - 1; i >= 1; i--) {
-
-        mlt += (*(str + start + i) - 48) * pwr;
-        pwr *= 10;
-    }
-
-    return mlt;
-}
-
-
-int update(int* res, int dec, int mlt) {
-
-    if (1 <= dec && dec <= 26)
-        *(res + dec - 1) += mlt;
-
-    return (dec < 10) ? 1 : 3;
 }

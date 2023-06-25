@@ -5,7 +5,27 @@
 
 
 
-int help_message(char* message);
+static int help_message(char* message) {
+
+    if (strlen(message) > 0) {
+
+        printf("\n");
+        printf("%s\n", message);
+    }
+
+    printf("\n");
+    printf("usage: frequency <encoded>\n");
+    printf("\n");
+    printf(" where <encoded> is a string of letters\n encoded as numbers of the form:\n");
+    printf("\n");
+    printf("  a - i  ->   1 - 9\n");
+    printf("  j - z  -> 10# - 26#\n");
+    printf("\n");
+    printf(" and n(c) where n is an encoded letter\n as per the above scheme, and c is the\n multiplicity\n");
+    printf("\n");
+
+    return -1;
+}
 
 
 
@@ -28,28 +48,4 @@ int main(int argc, char *argv[]) {
     printf("\n");
 
     return 0;
-}
-
-
-
-int help_message(char* message) {
-
-    if (strlen(message) > 0) {
-
-        printf("\n");
-        printf("%s\n", message);
-    }
-
-    printf("\n");
-    printf("usage: frequency <encoded>\n");
-    printf("\n");
-    printf(" where <encoded> is a string of letters\n encoded as numbers of the form:\n");
-    printf("\n");
-    printf("  a - i  ->   1 - 9\n");
-    printf("  j - z  -> 10# - 26#\n");
-    printf("\n");
-    printf(" and n(c) where n is an encoded letter\n as per the above scheme, and c is the\n multiplicity\n");
-    printf("\n");
-
-    return -1;
 }

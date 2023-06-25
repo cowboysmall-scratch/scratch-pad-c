@@ -6,10 +6,10 @@
 
 unsigned long long *fibonacci_numbers(int count) {
 
-    long long *v = malloc(count * sizeof(long long));
+    unsigned long long *v = malloc(count * sizeof(unsigned long long));
 
-    *(v + 0) = 0;
-    *(v + 1) = 1;
+    *(v + 0) = 0LL;
+    *(v + 1) = 1LL;
 
     for (int i = 2; i < count; i++)
         *(v + i) = *(v + i - 1) + *(v + i - 2);

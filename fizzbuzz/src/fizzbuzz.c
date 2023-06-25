@@ -1,16 +1,37 @@
+#include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
 
 
-int help_message();
+
+static int help_message(char* message) {
+
+    if (strlen(message) > 0) {
+
+        printf("\n");
+        printf("%s\n", message);
+    }
+
+    printf("\n");
+    printf("Usage: fizzbuzz <number>\n");
+    printf("\n");
+    printf(" where <number> is a number greater than 0\n");
+    printf("\n");
+
+    return -1;
+}
+
 
 
 int main(int argc, char const* argv[]) {
 
     int n;
 
-    if (argc == 1 || (n = strtol(argv[1], NULL, 10)) <= 0)
-        return help_message();
+    if (argc == 1)
+        return help_message("");
+
+    if ((n = strtol(argv[1], NULL, 10)) <= 0)
+        return help_message("!!! Invalid Value - please use value greater than zero !!!");
 
     printf("\n");
 
@@ -30,16 +51,3 @@ int main(int argc, char const* argv[]) {
 
     return 0;
 }
-
-
-int help_message() {
-
-    printf("Usage: fizzbuzz <number>");
-    printf("\n");
-    printf("\n");
-    printf(" where <number> is a number greater than 0");
-    printf("\n");
-    printf("\n");
-    return -1;
-}
-

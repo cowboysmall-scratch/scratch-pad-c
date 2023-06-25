@@ -14,7 +14,7 @@ static int help_message(char* message) {
     }
 
     printf("\n");
-    printf("usage: frequency <encoded>\n");
+    printf("Usage: frequency <encoded>\n");
     printf("\n");
     printf(" where <encoded> is a string of letters\n encoded as numbers of the form:\n");
     printf("\n");
@@ -35,7 +35,7 @@ int main(int argc, char *argv[]) {
         return help_message("");
 
     if (check(argv[1]) != 0)
-        return help_message("!!! malformed encoded string - please check for matching parenthesis !!!");
+        return help_message("!!! Malformed Encoded String - please check for matching parenthesis !!!");
 
     printf("\n");
     printf("\tencoded string: %s\n", argv[1]);

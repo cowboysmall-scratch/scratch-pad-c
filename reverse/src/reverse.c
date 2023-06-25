@@ -13,6 +13,7 @@ int main(int argc, char *argv[]) {
 
     printf("\n");
     printf("\tString reversed: %s\n", reversed);
+    printf("\n");
 
     return 0;
 }

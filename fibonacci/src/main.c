@@ -2,17 +2,10 @@
 #include <stdlib.h>
 
 #include "fib.h"
-#include "func.h"
 #include "print.h"
 
 
 int main(int argc, char *argv[]) {
-
-    // int n;
-
-    // printf("\n\tEnter a positive number: ");
-    // scanf("%d", &n);
-    // printf("\n");
 
     print_args(argc, argv);
 
